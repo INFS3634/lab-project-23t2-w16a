@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">INFS3634-Lab</string>
+    <string name="app_name">CryptoCurrency</string>
+    <string name="welcome_msg">Hello Earth!</string>
 </resources>
