@@ -25,12 +25,16 @@ public class MainActivity extends AppCompatActivity {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick clicked on MainActivity");
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra("key", msg);
-                startActivity(intent);
+                launchDetailActivity("BNB");
             }
         });
+    }
+
+    protected void launchDetailActivity(String msg) {
+        Log.d(TAG, "onClick clicked on MainActivity");
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra("key", msg);
+        startActivity(intent);
     }
 
 }
