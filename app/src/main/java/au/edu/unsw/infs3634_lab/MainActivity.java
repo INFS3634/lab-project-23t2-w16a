@@ -7,10 +7,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
+
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import au.edu.unsw.infs3634_lab.api.Crypto;
+import au.edu.unsw.infs3634_lab.api.Response;
 import au.edu.unsw.infs3634_lab.recyclerview_adapter.CryptoAdapter;
 import au.edu.unsw.infs3634_lab.recyclerview_adapter.RecyclerViewClickListener;
 
@@ -32,7 +42,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         recyclerView = findViewById(R.id.rvList);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new CryptoAdapter(Crypto.getCryptoCurrencies(), this);
+
+        Gson gson = new Gson();
+        Response response = gson.fromJson(Response.jsonResponse, Response.class);
+        List<Crypto> currencies = response.getData();
+
+        adapter = new CryptoAdapter((ArrayList<Crypto>) currencies, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -42,5 +57,40 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent.putExtra("key", symbol);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        SearchView searchView = (SearchView) menu.findItem(R.id.appBarSearch).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                adapter.getFilter().filter(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                adapter.getFilter().filter(s);
+                return false;
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sortName:
+                adapter.sortList(CryptoAdapter.SORT_METHOD_NAME);
+                return true;
+            case R.id.sortValue:
+                adapter.sortList(CryptoAdapter.SORT_METHOD_VALUE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

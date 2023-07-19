@@ -1,44 +1,61 @@
 package au.edu.unsw.infs3634_lab.api;
 
-import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class Crypto {
 
+    @SerializedName("id")
+    @Expose
     private String id;
+    @SerializedName("symbol")
+    @Expose
     private String symbol;
+    @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("nameid")
+    @Expose
     private String nameid;
+    @SerializedName("rank")
+    @Expose
     private Integer rank;
+    @SerializedName("price_usd")
+    @Expose
     private String priceUsd;
+    @SerializedName("percent_change_24h")
+    @Expose
     private String percentChange24h;
+    @SerializedName("percent_change_1h")
+    @Expose
     private String percentChange1h;
+    @SerializedName("percent_change_7d")
+    @Expose
     private String percentChange7d;
+    @SerializedName("price_btc")
+    @Expose
     private String priceBtc;
+    @SerializedName("market_cap_usd")
+    @Expose
     private String marketCapUsd;
+    @SerializedName("volume24")
+    @Expose
     private Double volume24;
+    @SerializedName("volume24a")
+    @Expose
     private Double volume24a;
+    @SerializedName("csupply")
+    @Expose
     private String csupply;
+    @SerializedName("tsupply")
+    @Expose
     private String tsupply;
+    @SerializedName("msupply")
+    @Expose
     private String msupply;
-
-    public Crypto(String symbol, String name, String nameid, Integer rank, String priceUsd, String percentChange24h, String percentChange1h, String percentChange7d, String priceBtc,
-                  String marketCapUsd, Double volume24, Double volume24a, String csupply, String tsupply, String msupply) {
-        this.symbol = symbol;
-        this.name = name;
-        this.nameid = nameid;
-        this.rank = rank;
-        this.priceUsd = priceUsd;
-        this.percentChange24h = percentChange24h;
-        this.percentChange1h = percentChange1h;
-        this.percentChange7d = percentChange7d;
-        this.priceBtc = priceBtc;
-        this.marketCapUsd = marketCapUsd;
-        this.volume24 = volume24;
-        this.volume24a = volume24a;
-        this.csupply = csupply;
-        this.tsupply = tsupply;
-        this.msupply = msupply;
-    }
 
     public String getId() {
         return id;
@@ -168,26 +185,12 @@ public class Crypto {
         this.msupply = msupply;
     }
 
-    public static ArrayList<Crypto> getCryptoCurrencies() {
-        ArrayList<Crypto> currencies = new ArrayList<>();
-        currencies.add(new Crypto("BTC","Bitcoin","bitcoin",1,"26531.04","0.72","0.15","-1.78","1.00","514453255891.73",9132544844.26387,13094690453.92319,"19390615.00","19390615","21000000"));
-        currencies.add(new Crypto("ETH","Ethereum", "ethereum", 2,"1839.96","0.19","0.14","-1.85","0.069358","225166036445.31",4218726862.1129327,5263481401.962947, "122375302.00","122375302",""));
-        currencies.add(new Crypto("USDT","Tether","tether",3,"1.00", "0.13","0.08", "0.17","0.000038","68404671800.37", 16567785501.13163,22907281853.669888,"68319442037.00","73141766321.234",""));
-        currencies.add(new Crypto("BNB","Binance Coin","binance-coin",4,"259.83","0.20","-0.37","-14.98","0.009794","43340477980.66",422341982.7054159,809248600.1687386,"166801148.00","192443301","200000000"));
-        currencies.add(new Crypto("USDC","USD Coin","usd-coin", 5, "0.999965", "0.00", "0.01", "0.03", "0.000038", "41299437198.98",899739870.9017171,1112386527.8138921, "41300868946.00", "41300868946.621", ""));
-        currencies.add(new Crypto("XRP","XRP","ripple",6,"0.523878","0.96","-0.22","3.20","0.000020","22479356435.34",759884200.087552,1213997187.6931505,"42909539227.00","99991841593","100000000000"));
-        currencies.add(new Crypto("BUSD","Binance USD","binance-usd",7,"0.999803","0.02","0.00","0.02","0.000038","16145731107.97",882269304.1307173,1269337655.236371,"16148914845.00","16148914845.973",""));
-        currencies.add(new Crypto("ADA","Cardano","cardano",8,"0.317272","-2.13","-0.46","-13.51","0.000012","10984634620.40",172266139.55350745,277280467.29432404,"34622161734.00","35467426506.415","45000000000"));
-        currencies.add(new Crypto("DOGE","Dogecoin","dogecoin",9,"0.067973","0.51","0.02","-5.79","0.000003","9488773162.83",127896692.9516128,218266298.60235,"139596546384.00","139596546384",""));
-        currencies.add(new Crypto("TRX","TRON","tron",10,"0.077616","1.17","0.28","3.20","0.000003","7114984432.31",165954869.45410913,195690199.8632755,"91668462019.00","100000000000",""));
-
-        return currencies;
-    }
-
-    // To-Do
     // Implement findCrypto method
     public static Crypto findCrypto(String symbol) {
-        ArrayList<Crypto> currencies = Crypto.getCryptoCurrencies();
+        Gson gson = new Gson();
+        Response response = gson.fromJson(Response.jsonResponse, Response.class);
+        List<Crypto> currencies = response.getData();
+
         for (final Crypto crypto : currencies) {
             if (crypto.getSymbol().toLowerCase().equals(symbol.toLowerCase())) {
                 return crypto;
