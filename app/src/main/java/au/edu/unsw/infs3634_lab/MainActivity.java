@@ -20,9 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import au.edu.unsw.infs3634_lab.api.Crypto;
+import au.edu.unsw.infs3634_lab.api.CryptoService;
 import au.edu.unsw.infs3634_lab.api.Response;
 import au.edu.unsw.infs3634_lab.recyclerview_adapter.CryptoAdapter;
 import au.edu.unsw.infs3634_lab.recyclerview_adapter.RecyclerViewClickListener;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewClickListener {
     private RecyclerView recyclerView;
@@ -48,6 +53,30 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         List<Crypto> currencies = response.getData();
 
         adapter = new CryptoAdapter((ArrayList<Crypto>) currencies, this);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.coinlore.net/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        CryptoService service = retrofit.create(CryptoService.class);
+        Call<Response> responseCall = service.getCryptos();
+
+        responseCall.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Log.d(TAG, "API call successful!");
+                List<Crypto> cryptos = response.body().getData();
+                adapter.setData(cryptos);
+                adapter.sortList(CryptoAdapter.SORT_METHOD_NAME);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                Log.d(TAG, "API call failure.");
+            }
+        });
+
         recyclerView.setAdapter(adapter);
     }
 

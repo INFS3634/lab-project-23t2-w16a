@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import au.edu.unsw.infs3634_lab.R;
 import au.edu.unsw.infs3634_lab.api.Crypto;
@@ -43,7 +44,7 @@ public class CryptoAdapter extends RecyclerView.Adapter<CryptoAdapter.MyViewHold
         holder.name.setText(crypto.getName());
         holder.value.setText(crypto.getPriceUsd());
         holder.change.setText(crypto.getPercentChange1h());
-        holder.itemView.setTag(crypto.getSymbol());
+        holder.itemView.setTag(crypto.getId());
     }
 
     @Override
@@ -115,5 +116,11 @@ public class CryptoAdapter extends RecyclerView.Adapter<CryptoAdapter.MyViewHold
                 }
             });
         }
+    }
+
+    public void setData(List<Crypto> cryptos) {
+        localDataSet.clear();
+        localDataSet.addAll(cryptos);
+        notifyDataSetChanged();
     }
 }
