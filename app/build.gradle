@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'au.edu.unsw.infs3634_lab'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "au.edu.unsw.infs3634_lab"
@@ -29,6 +29,8 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.room:room-runtime:2.5.2'
+    annotationProcessor 'androidx.room:room-compiler:2.5.2'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.google.code.gson:gson:2.10.1'

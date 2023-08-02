@@ -1,15 +1,22 @@
 package au.edu.unsw.infs3634_lab.api;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Entity
 public class Crypto {
 
     @SerializedName("id")
     @Expose
+    @PrimaryKey
+    @NonNull
     private String id;
     @SerializedName("symbol")
     @Expose
